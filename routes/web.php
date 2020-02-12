@@ -4,7 +4,7 @@ Route::get('/', function(){
 	return redirect()->route('login');
 });
 
-Route::namespace('auth')->group(function(){
+Route::namespace('Auth')->group(function(){
 	Route::get('/login', 'LoginController@showLoginForm');
 	Route::post('/login', 'LoginController@login')->name('login');
 	Route::get('/logout', 'LoginController@logout')->name('logout');
@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function(){
 		Route::get('/update/{pegawai}', 'PegawaiController@fetchSimAsnData')->name('pegawai.update');
 	});
 
-	Route::namespace('admin')->group(function(){
+	Route::namespace('Admin')->group(function(){
 		Route::resource('roles', 'RoleController');
 		Route::resource('permissions', 'PermissionController');
 	});
