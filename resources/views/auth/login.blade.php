@@ -103,7 +103,7 @@
                   </label>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                  <button type="submit" id="login-btn" class="btn btn-primary my-4">Sign in</button>
                 </div>
               </form>
             </div>
@@ -119,6 +119,10 @@
     const submitLogin = async (e) =>
     {
         e.preventDefault();
+
+        const button = document.querySelector('#login-btn');
+        button.innerHTML = 'Sign you in...';
+        button.disabled = true;
 
         const body = {
             username: document.querySelector('#username').value,
@@ -151,9 +155,7 @@
 
         }catch(err){
             const container = document.querySelector('#message-flash');
-            container.innerHTML = `
-                 <div class="alert alert-danger">${err.message}</div>
-            `;
+            container.innerHTML = `<div class="alert alert-danger">${err.message}</div>`;
         }
     }
 

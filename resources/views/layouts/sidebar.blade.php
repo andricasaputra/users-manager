@@ -99,21 +99,28 @@
               <i class="ni ni-circle-08 text-red"></i> User Manager
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('roles.index') }}">
-              <i class="ni ni-key-25 text-info"></i> Roles
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('permissions.index') }}">
-              <i class="ni ni-bullet-list-67 text-orange"></i> Permission
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('setting.index') }}">
-              <i class="ni ni-settings-gear-65 text-green"></i> Setting
-            </a>
-          </li>
+          @role('administrator')
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('wilkers.index') }}">
+                <i class="fas fa-home"></i> Wilker
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('roles.index') }}">
+                <i class="ni ni-key-25 text-info"></i> Roles
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('permissions.index') }}">
+                <i class="ni ni-bullet-list-67 text-orange"></i> Permission
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('setting.index') }}">
+                <i class="ni ni-settings-gear-65 text-green"></i> Setting
+              </a>
+            </li>
+          @endrole
         </ul>
         <!-- Divider -->
         <hr class="my-3">

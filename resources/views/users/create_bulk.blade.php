@@ -18,7 +18,7 @@
                   <h3 class="mb-0">Add Bulk Users</h3>
                 </div>
                 <div class="col-4 text-right">
-                  <a href="#!" class="btn btn-sm btn-primary">Note : File type must be excel !</a>
+                  <a href="#!" class="btn btn-sm btn-primary">Note : Tipe file harus excel !</a>
                 </div>
               </div>
             </div>

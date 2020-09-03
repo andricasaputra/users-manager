@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Wilker;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Repositories\UserRepository as Repository;
 
 ini_set('max_execution_time', 500);
@@ -24,7 +26,7 @@ class UsersController extends Controller
 
     public function create()
     {
-    	return view('users.create');
+    	return view('users.create')->withWilkers(Wilker::all());
     }
 
     public function createBulk()
@@ -44,7 +46,9 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.edit')->withUser($user);
+        $user->load('wilkers');
+
+        return view('users.edit')->withUser($user)->withWilkers(Wilker::all());
     }
 
     public function update(Request $request, User $user)
@@ -64,13 +68,33 @@ class UsersController extends Controller
 
     public function delete(User $user)
     {
+        $user->wilkers()->detach();
         $user->delete();
 
-        return back()->withSuccess('Success delete');
+        return back()->withSuccess('Berhasil delete user');
     }
 
     public function showTable(Request $request)
     {
        return $this->users->showTable($request);
+    }
+
+    public function roles(User $user)
+    {
+        $roles = Role::all();
+
+        return view('users.roles')->withUser($user)->withRoles($roles);
+    }
+
+    public function attachRoles(Request $request, User $user)
+    {
+        $user->syncRoles($request->roles);
+
+        return back()->withSuccess('Roles added');
+    }
+
+    public function showRoles(Request $request)
+    {
+        return response()->json($request->user()->roles->pluck('name'));
     }
 }

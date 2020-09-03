@@ -19,6 +19,6 @@ class IsAdmin
            return $next($request);
         }
 
-        return back()->withWarning('Anda tidak mempunyai hak akses ke halaman ini');
+        return back()->withWarning('Anda tidak mempunyai hak akses ke halaman yang anda tuju');
     }
 }

@@ -1,37 +1,38 @@
 <?php
 
-Route::get('/', function(){
-	return redirect()->route('login');
-});
+Route::get('/', 'HomeController@index');
 
 Route::namespace('Auth')->group(function(){
-	Route::get('/login', 'LoginController@showLoginForm');
+	Route::get('/login', 'LoginController@showLoginForm')->name('login.form');
 	Route::post('/login', 'LoginController@login')->name('login');
 	Route::get('/logout', 'LoginController@logout')->name('logout');
+	Route::post('/login/e-office', 'LoginController@eOfficeLogin')->name('e-office.login');
 });
 
 Route::middleware('auth')->group(function(){
 
-	Route::get('/home', 'HomeController@index')->name('home');
-	Route::resource('/users', 'UsersController');
+	Route::get('home', 'HomeController@home')->name('home');
+	Route::resource('users', 'UsersController')->except('destroy');
+	Route::get('users/destroy/{user?}', 'UsersController@delete')->name('users.destroy');
 	Route::get('users/fetch/{user}', 'UsersController@fetch')->name('users.fetch');
 	Route::get('import', 'UsersController@createBulk')->name('users.create.bulk');
 	Route::post('import', 'UsersController@import')->name('import');
+	Route::get('users/roles/{user}', 'UsersController@roles')->name('users.roles');
+	Route::post('users/roles/{user}', 'UsersController@attachRoles')->name('users.attach.roles');
 
 	Route::prefix('pegawai')->group(function(){
-		Route::get('/pegawai/', 'PegawaiController@index')->name('pegawai.index');
-		Route::get('/show/{nip?}', 'PegawaiController@detail')->name('pegawai.detail');
-		Route::post('/fetch', 'PegawaiController@fetchAllSimAsnData')->name('pegawai.fetch');
-		Route::get('/update/{pegawai}', 'PegawaiController@fetchSimAsnData')->name('pegawai.update');
+		Route::get('/', 'PegawaiController@index')->name('pegawai.index');
+		Route::get('show/{nip?}', 'PegawaiController@detail')->name('pegawai.detail');
+		Route::post('fetch', 'PegawaiController@fetchAllSimAsnData')->name('pegawai.fetch');
+		Route::get('update/{pegawai}', 'PegawaiController@fetchSimAsnData')->name('pegawai.update');
 	});
+
+	Route::resource('wilkers', 'WilkerController')->except(['destroy']);
+	Route::post('wilkers_delete/{wilker?}', 'WilkerController@destroy')->name('wilker.destroy');
 
 	Route::namespace('Admin')->group(function(){
 		Route::resource('roles', 'RoleController');
 		Route::resource('permissions', 'PermissionController');
-	});
-
-	Route::get('generate/apitoken', function(){
-		return \Illuminate\Support\Str::random(60);
 	});
 
 	Route::get('setting', 'SettingController@index')->name('setting.index');

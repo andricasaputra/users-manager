@@ -63,8 +63,17 @@
             ],
         });
 
-    });/*End Ready*/
+        $(document).on('click', '.delete-user-btn', e => {
 
+          e.preventDefault();
+
+          if (!confirm('Yakin ingin menghapur data ini?')) return;
+          
+          window.location = '{{ route('users.destroy') }}/' +  e.target.dataset.id;
+
+        });
+
+    });/*End Ready*/
 
   </script>
 @endsection

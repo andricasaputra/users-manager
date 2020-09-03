@@ -67,7 +67,7 @@ class PegawaiRepository extends BaseRepository
 
             $pegawai->update($this->getData());
 
-            return back()->withSuccess('Success update data pegawai');
+            return back()->withSuccess('Berhasil update data pegawai');
 
         } catch (\Exception $e) {
 
@@ -112,7 +112,9 @@ class PegawaiRepository extends BaseRepository
                 if ($pegawai) {
                    $pegawai->update($this->getData('nip'));
                 } else {
-                    Pegawai::create($this->getData()); 
+                    $data = $this->getData();
+                    $data += ['user_id' => $user->id];
+                    Pegawai::create($data); 
                 }
 
                 $counter++;
@@ -120,7 +122,7 @@ class PegawaiRepository extends BaseRepository
 
             return response()->json([
                 'alert' => 'alert-success',
-                'message' => "Success update $counter data pegawai"
+                'message' => "Berhasil update $counter data pegawai"
             ]);
 
         } catch (\Exception $e) {

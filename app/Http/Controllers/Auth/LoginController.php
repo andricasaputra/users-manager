@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -100,9 +102,11 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        auth()->user()->token()->update([
-            'revoked' => 1
-        ]);
+        if (auth()->check()) {
+            auth()->user()->token()->update([
+                'revoked' => 1
+            ]);
+        }
 
         $this->guard()->logout();
 
@@ -118,4 +122,40 @@ class LoginController extends Controller
 
         return $this->loggedOut($request) ?: redirect('/');
     }
+
+    public function eOfficeLogin(Request $request)
+    {
+        $user = User::findOrFail($request->getContent());
+
+        if(!$user){
+            return response()->json([
+                'error' => true,
+                'message' => 'Unauthorized',
+                'status' => 'Unauthenticated',
+            ], 401);
+        }
+
+        auth()->login($user);
+
+        $tokenResult = $user->createToken('Personal Access Token');
+
+        $token = $tokenResult->token;
+
+        if ($request->remember_me){
+             $token->expires_at = Carbon::now()->addWeeks(1);
+        }
+
+        $token->save();
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Successfully Login',
+            'redirect' => route('home'),
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'status' => 'Authenticated',
+            'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString()
+        ], 200);
+    }
+
 }

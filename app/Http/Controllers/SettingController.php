@@ -20,8 +20,8 @@ class SettingController extends Controller
 		$admin = $request->user()->hasRole('administrator');
 
         if ($admin) {
-            $token = User::all()->map(function($user){
-            	return $user->api_token;
+            $token = User::all()->map(function($users){
+            	return $users->api_token;
             });
         } else {
         	$token = $request->user()->map(function($user){

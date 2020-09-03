@@ -21,7 +21,7 @@ class User extends Authenticatable
         'username', 'password', 'e_password', 'api_token'
     ];
 
-    protected $with = ['pegawai'];
+    protected $with = ['pegawai', 'roles'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -42,5 +42,10 @@ class User extends Authenticatable
     public function token()
     {
         return $this->hasOne(OauthAccessToken::class);
+    }
+
+    public function wilkers()
+    {
+        return $this->belongsToMany(Wilker::class, 'wilker_users');
     }
 }

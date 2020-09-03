@@ -23,7 +23,6 @@
                         @foreach ($permissions as $permission)
                             {{ Form::checkbox('permissions[]',  $permission->id ) }}
                             {{ Form::label($permission->name, ucfirst($permission->name)) }}<br>
-
                         @endforeach
                     </div>
 

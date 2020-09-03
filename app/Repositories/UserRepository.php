@@ -24,38 +24,49 @@ class UserRepository extends BaseRepository
     {
     	$request->validate([
     		'username' => 'required|string',
-    		'password' => 'required|string|confirmed'
+    		'password' => 'required|string|confirmed',
+            'wilker' => 'required'
     	]);
 
-    	User::create([
+    	$user = User::create([
     		'username' => $request->username,
     		'password' => bcrypt($request->password),
+            'e_password' => Crypt::encrypt($request->password)
     	]);
 
-    	return back()->withSuccess('Success add new user');
+        $user->wilkers()->attach($request->wilker);
+
+    	return back()->withSuccess('Berhasil tambah user baru');
     }
 
     public function update($request, $user)
     {
         $request->validate([
             'username' => 'required|string',
-            'password' => 'required|string|confirmed|min:6'
+            'password' => 'sometimes|string|confirmed|min:6',
+            'wilker' => 'required'
         ]);
 
-        $user->update([
-            'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'e_password' => Crypt::encrypt($request->password)
-        ]);
+        if ($request->has('password')) {
+            $user->update([
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'e_password' => Crypt::encrypt($request->password)
+            ]);
+        } else {
+            $user->update($request->only('username'));
+        }
 
-        return redirect(route('users.index'))->withSuccess('Success edit user ' . $user->username);
+        $user->wilkers()->sync($request->wilker);
+
+        return redirect(route('users.index'))->withSuccess('Berhasil edit user ' . $user->username);
     }
 
     public function import() 
     {
         Excel::import(new UsersImport, request()->file('file'));
 
-        return back()->withSuccess('Success add new users');
+        return back()->withSuccess('Berhasil tambah user baru');
     }
 
     public function show(Request $request)
@@ -91,7 +102,7 @@ class UserRepository extends BaseRepository
                 $user->pegawai()->create($this->getData()); 
             }
 
-            return back()->withSuccess('Success tambah data pegawai');
+            return back()->withSuccess('Berhasil update data pegawai');
 
         } catch (\Exception $e) {
 
@@ -109,18 +120,24 @@ class UserRepository extends BaseRepository
 
             if ($this->admin) {
                 return '
-                <a href="'. route('users.edit', $user->id) .'" class="btn btn-primary btn-xs">
-                    <i class="fa fa-edit"></i> Edit
+                <a href="'. route('users.edit', $user->id) .'" class="btn btn-outline-primary btn-xs">
+                    <i class="fas fa-pencil-alt"></i> Edit
                 </a> 
-                <a href="'. route('users.destroy', $user->id) .'" class="btn btn-danger btn-xs">
+                <a href="#" data-id="'. $user->id .'" class="btn btn-outline-danger btn-xs delete-user-btn">
                     <i class="fa fa-trash"></i> Delete
                 </a>
-                <a href= "'. route('users.fetch', $user->id) .'"  class="btn btn-success btn-xs">
-                    <i class="fa fa-eye"></i> Tarik data pegawai dari sim asn 
-                </a>';
+                <a href= "'. route('users.fetch', $user->id) .'"  class="btn btn-outline-success btn-xs">
+                    <i class="fa fa-wrench"></i> Update 
+                </a>
+                <a href= "'. route('users.roles', $user->id) .'"  class="btn btn-outline-info btn-xs">
+                    <i class="fa fa-cog"></i> Role 
+                </a>
+                ';
             } 
 
-            return '';
+            return '<a href= "'. route('users.fetch', $user->id) .'"  class="btn btn-success btn-xs">
+                    <i class="fa fa-wrench"></i> Update 
+                </a>';
         })
         ->make(true);
     }

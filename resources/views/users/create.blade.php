@@ -19,7 +19,7 @@
                   <h3 class="mb-0">Add User</h3>
                 </div>
                 <div class="col-4 text-right">
-                  <a href="{{ route('users.create.bulk') }}" class="btn btn-sm btn-primary">Create Bulk Users</a>
+                  <a href="{{ route('users.create.bulk') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah massal</a>
                 </div>
               </div>
             </div>
@@ -46,6 +46,25 @@
                         <div class="form-group">
                           <label class="form-control-label" for="input-email">Password Confirmation</label>
                           <input name="password_confirmation" type="password"  class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-control-label" for="#">Wilker</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                            @foreach($wilkers as $wilker)
+                              <div class="custom-control custom-checkbox">
+                                <input name="wilker[]" type="checkbox" class="custom-control-input" id="{{ $wilker->id }}" value="{{ $wilker->id }}">
+                                <label class="custom-control-label" for="{{ $wilker->id }}">{{ $wilker->nama_wilker }}</label>
+                              </div>
+                            @endforeach
                         </div>
                       </div>
                   </div>

@@ -29,9 +29,7 @@ class BaseRepository
     protected function prepare()
     {
     	$this->client = app('Client');
-    
         $this->crawler = $this->client->request('GET', $this->loginUri);
-
         $this->form = $this->crawler->filterXPath($this->inputLoginXpath)->form();
 
         return $this;
@@ -40,11 +38,8 @@ class BaseRepository
     protected function login()
     {
     	$this->form[$this->input['username']] = $this->username;
-        
         $this->form[$this->input['password']] = $this->password;
-
         $this->client->submit($this->form);
-
         $this->crawler = $this->client->request('GET', $this->homeUri);
 
         return $this;
@@ -72,10 +67,8 @@ class BaseRepository
             'image' => $image
         ];
 
-        if (isset($forget)) {
-            unset($body[$forget]);
-        }
-
+        if (isset($forget)) unset($body[$forget]);
+        
         return $body;
     }
 }
