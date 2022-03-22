@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\MasterPegawai as Pegawai;
+use App\Models\MasterPegawai as Pegawai;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Resources\User as UserApi;
 

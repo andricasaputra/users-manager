@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Wilker;
+use App\Models\User;
+use App\Models\Wilker;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Repositories\UserRepository as Repository;

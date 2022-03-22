@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\MasterPegawai as Pegawai;
+use App\Models\MasterPegawai as Pegawai;
 use App\Repositories\PegawaiRepository as Repository;
 
 ini_set('max_execution_time', 500);

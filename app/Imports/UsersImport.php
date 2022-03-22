@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Concerns\ToModel;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -57,6 +57,7 @@ class LoginController extends Controller
         $this->validateLogin($request);
 
         if(! Auth::attempt($this->credentials($request))){
+
             return response()->json([
                 'error' => true,
                 'message' => 'Unauthorized',
@@ -73,8 +74,6 @@ class LoginController extends Controller
         if ($request->remember_me){
              $token->expires_at = Carbon::now()->addWeeks(1);
         }
-
-        $token->save();
 
         return response()->json([
             'error' => false,

@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\User;
+use App\Models\User;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -89,6 +89,7 @@ class UserRepository extends BaseRepository
     public function fetch(User $user)
     {
         $this->username = $user->username;
+
         $this->password = Crypt::decrypt($user->e_password);
 
         try {

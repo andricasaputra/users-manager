@@ -32,6 +32,8 @@ class BaseRepository
         $this->crawler = $this->client->request('GET', $this->loginUri);
         $this->form = $this->crawler->filterXPath($this->inputLoginXpath)->form();
 
+        
+
         return $this;
     }
 
